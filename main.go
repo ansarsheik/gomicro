@@ -10,15 +10,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/gamegos/jsend"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-)
-
-const (
-	StatusSuccess = "success"
-	StatusError   = "error"
-	StatusFail    = "fail"
 )
 
 func waitForShutdown(srv *http.Server) {
@@ -37,12 +30,11 @@ func waitForShutdown(srv *http.Server) {
 	os.Exit(0)
 }
 
-func Home(w http.ResponseWriter, r *http.Request) {
-	jsend.Wrap(w).
-		Status(201).
-		Message("ticket data found").
-		Data("fake data").
-		Send()
+func checkErr(err error) bool {
+	if err != nil {
+		return true
+	}
+	return false
 }
 
 func main() {
@@ -56,7 +48,8 @@ func main() {
 	r := mux.NewRouter()
 
 	// end points
-	r.HandleFunc("/", Home).Methods("GET")
+	r.HandleFunc("/addpost", addNewPost).Methods("POST")
+	r.HandleFunc("/getcategories", getCategories).Methods("GET")
 
 	srv := &http.Server{
 		Handler:      r,

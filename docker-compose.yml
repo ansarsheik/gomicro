@@ -1,0 +1,19 @@
+version: "3.1"
+
+services:
+  go-mysql-server:
+    image: mysql:5.7
+    container_name: go-mysql-server
+    volumes:
+      - dir-datavolume-go-mysql-server:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      #MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "3355:3306"
+
+volumes:
+  dir-datavolume-go-mysql-server:
